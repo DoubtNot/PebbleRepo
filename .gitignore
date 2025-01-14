@@ -71,3 +71,33 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+*.png
+
+Pebble/Assets/Oculus Hands Physics/
+
+Pebble/Assets/Samples/XR Interaction Toolkit/2.5.2/Starter Assets/DemoSceneAssets/
+
+Pebble/Assets/Samples/XR Interaction Toolkit/2.5.2/Starter Assets/
+
+Pebble/Assets/TextMesh Pro/
+
+Pebble/Assets/XR/Loaders/
+
+Pebble/Assets/XR/
+
+Pebble/Assets/XRI/
+
+Pebble/Library/
+
+Pebble/obj/Debug/
+
+Pebble/UserSettings/
+
+Pebble/UIElementsSchema/
+
+Pebble/ProjectSettings/
+
+Pebble/Packages/
+
+Pebble/Logs/
