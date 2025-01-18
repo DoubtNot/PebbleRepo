@@ -2,24 +2,19 @@ using UnityEngine;
 
 public class PlayerRotation : MonoBehaviour
 {
-    public Transform handTransform;  // Reference to the hand's transform
-    public Transform headTransform;  // Reference to the head's transform
-    public float rotationSpeed = 10f; // Speed of rotation
-    public float maxDistance = 2f;   // Maximum distance to influence rotation
-    public float minDistance = 0.5f; // Minimum distance to influence rotation
-
-    private float rotationAmount; // Amount of rotation on the Y-axis
+    public Transform rightHandTransform; // Reference to the right hand's transform
+    public Transform leftHandTransform;  // Reference to the left hand's transform
+    public float rotationSpeed = 10f;    // Speed of rotation
 
     void Update()
     {
-        if (handTransform != null && headTransform != null)
+        if (rightHandTransform != null && leftHandTransform != null)
         {
-            // Calculate the distance between the hand and the head
-            float distance = Vector3.Distance(handTransform.position, headTransform.position);
+            // Calculate the difference in the Y-axis position between the hands
+            float yDifference = rightHandTransform.position.y - leftHandTransform.position.y;
 
-            // Map the distance to a range between -360 and 360
-            float normalizedDistance = Mathf.InverseLerp(minDistance, maxDistance, distance);
-            rotationAmount = Mathf.Lerp(-360f, 360f, normalizedDistance);
+            // Determine the rotation amount based on the difference
+            float rotationAmount = yDifference * rotationSpeed;
 
             // Apply rotation to the player on the Y-axis
             transform.rotation = Quaternion.Euler(0, rotationAmount, 0);
