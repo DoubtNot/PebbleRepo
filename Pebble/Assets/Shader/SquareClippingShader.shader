@@ -2,11 +2,11 @@ Shader "Custom/SquareClippingShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {} // Base texture
-        _ClipMin ("Clip Min Bounds", Vector) = (-5.0, -5.0, -5.0, 0) // Min bounds of the clipping cube
-        _ClipMax ("Clip Max Bounds", Vector) = (5.0, 5.0, 5.0, 0)    // Max bounds of the clipping cube
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5                 // Smoothness for lighting
-        _Metallic ("Metallic", Range(0,1)) = 0.0                     // Metallic for lighting
+        _MainTex ("Texture", 2D) = "white" {}                      // Base texture
+        _ClipCenter ("Clip Center", Vector) = (0.0, 0.0, 0.0, 0)  // Center of the clipping cube
+        _ClipSize ("Clip Size", Vector) = (10.0, 10.0, 10.0, 0)    // Size of the clipping cube
+        _Glossiness ("Smoothness", Range(0,1)) = 0.5              // Smoothness for lighting
+        _Metallic ("Metallic", Range(0,1)) = 0.0                  // Metallic for lighting
     }
     SubShader
     {
@@ -17,10 +17,10 @@ Shader "Custom/SquareClippingShader"
         #pragma surface surf Standard fullforwardshadows
 
         sampler2D _MainTex;
-        float4 _ClipMin; // Minimum bounds (x, y, z)
-        float4 _ClipMax; // Maximum bounds (x, y, z)
-        float _Glossiness; // Smoothness
-        float _Metallic;   // Metallic
+        float4 _ClipCenter; // Center of the clipping region (x, y, z)
+        float4 _ClipSize;   // Half-size of the clipping region (width, height, depth)
+        float _Glossiness;  // Smoothness
+        float _Metallic;    // Metallic
 
         struct Input
         {
@@ -37,10 +37,14 @@ Shader "Custom/SquareClippingShader"
             o.Metallic = _Metallic;   // Metallic property
             o.Smoothness = _Glossiness; // Smoothness property
 
-            // Clip fragments outside the square bounds
-            if (IN.worldPos.x < _ClipMin.x || IN.worldPos.x > _ClipMax.x ||
-                IN.worldPos.y < _ClipMin.y || IN.worldPos.y > _ClipMax.y ||
-                IN.worldPos.z < _ClipMin.z || IN.worldPos.z > _ClipMax.z)
+            // Compute the min and max bounds based on the center and size
+            float3 clipMin = _ClipCenter.xyz - _ClipSize.xyz * 0.5;
+            float3 clipMax = _ClipCenter.xyz + _ClipSize.xyz * 0.5;
+
+            // Clip fragments outside the cube bounds
+            if (IN.worldPos.x < clipMin.x || IN.worldPos.x > clipMax.x ||
+                IN.worldPos.y < clipMin.y || IN.worldPos.y > clipMax.y ||
+                IN.worldPos.z < clipMin.z || IN.worldPos.z > clipMax.z)
             {
                 clip(-1); // Discard pixels outside the bounds
             }
