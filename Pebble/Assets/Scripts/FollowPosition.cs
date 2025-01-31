@@ -1,16 +1,34 @@
 using UnityEngine;
 
-public class FollowPosition : MonoBehaviour
+public class FollowTransform : MonoBehaviour
 {
     [SerializeField] private Transform target; // Reference to the target object
-    [SerializeField] private Vector3 offset = Vector3.zero; // Default offset (0,0,0)
+    [SerializeField] private Vector3 positionOffset = Vector3.zero; // Default position offset
+    [SerializeField] private Vector3 rotationOffset = Vector3.zero; // Default rotation offset
+    [SerializeField] private Vector3 scaleMultiplier = Vector3.one; // Default scale multiplier
+
+    [SerializeField] private bool followPosition = true;
+    [SerializeField] private bool followRotation = true;
+    [SerializeField] private bool followScale = true;
 
     private void Update()
     {
         if (target != null)
         {
-            // Apply the offset to the position
-            transform.position = target.position + offset;
+            if (followPosition)
+            {
+                transform.position = target.position + positionOffset;
+            }
+
+            if (followRotation)
+            {
+                transform.rotation = target.rotation * Quaternion.Euler(rotationOffset);
+            }
+
+            if (followScale)
+            {
+                transform.localScale = Vector3.Scale(target.localScale, scaleMultiplier);
+            }
         }
     }
 }

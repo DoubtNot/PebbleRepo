@@ -11,42 +11,36 @@ public class PlayerMover : MonoBehaviour
     private bool isMoving = false;
     private Rigidbody rb; // Reference to the Rigidbody component
 
-    private Vector3 lastPosition; // To track the last position of the player
+    private Vector3? lastPosition = null; // Nullable to ensure correct initialization
 
     private void Awake()
     {
-        // Get the Rigidbody component attached to the player
         rb = GetComponent<Rigidbody>();
-    }
-
-    private void Start()
-    {
-        // Initialize the lastPosition
-        lastPosition = transform.position;
     }
 
     private void Update()
     {
         if (isMoving)
         {
-            // Apply physics-based movement by setting the velocity of the Rigidbody
             Vector3 movement = transform.forward * moveSpeed;
             rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
 
-            // Move the WorldGrp object only if the player has moved
-            if (worldGrp != null && transform.position != lastPosition)
+            if (worldGrp != null)
             {
-                // Move the WorldGrp object based on the player's position change
-                Vector3 playerMovement = transform.position - lastPosition;
-                worldGrp.transform.position -= playerMovement; // Move opposite to player
+                if (lastPosition == null)
+                {
+                    // Initialize lastPosition only when movement starts
+                    lastPosition = transform.position;
+                }
 
-                // Update the lastPosition for future comparisons
+                Vector3 playerMovement = transform.position - lastPosition.Value;
+                worldGrp.transform.position -= new Vector3(playerMovement.x, 0, playerMovement.z);
+
                 lastPosition = transform.position;
             }
         }
         else
         {
-            // Stop the Rigidbody's movement when not moving
             rb.velocity = Vector3.zero;
         }
     }
@@ -59,5 +53,6 @@ public class PlayerMover : MonoBehaviour
     public void StopMove()
     {
         isMoving = false;
+        lastPosition = null; // Reset lastPosition when stopping to prevent incorrect movement calculations
     }
 }
