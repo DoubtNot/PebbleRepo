@@ -103,6 +103,7 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClipDistance: 0.67
+    - _ClipRadius: 0.5
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
@@ -130,7 +131,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ClipCenter: {r: -0.23979616, g: 1.066265, b: 0.35218525, a: 0}
+    - _ClipCenter: {r: 0, g: 0, b: 0, a: 0}
     - _ClipMax: {r: 0.75, g: 10, b: 0.75, a: 0}
     - _ClipMin: {r: -0.75, g: -0.75, b: -0.75, a: 0}
     - _ClipRotation_Row0: {r: -0, g: 0.3149242, b: -0, a: -0.9491168}

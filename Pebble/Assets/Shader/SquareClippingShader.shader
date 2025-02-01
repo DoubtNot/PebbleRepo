@@ -3,8 +3,8 @@ Shader "Custom/SquareClippingShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}                      // Base texture
-        _ClipCenter ("Clip Center", Vector) = (0.0, 0.0, 0.0, 0)  // Center of the clipping cube
-        _ClipSize ("Clip Size", Vector) = (10.0, 10.0, 10.0, 0)    // Size of the clipping cube
+        _ClipCenter ("Clip Center", Vector) = (0.0, 0.0, 0.0, 0)  // Center of the clipping sphere
+        _ClipRadius ("Clip Radius", Float) = 5.0                   // Radius of the clipping sphere
         _Glossiness ("Smoothness", Range(0,1)) = 0.5              // Smoothness for lighting
         _Metallic ("Metallic", Range(0,1)) = 0.0                  // Metallic for lighting
     }
@@ -17,8 +17,8 @@ Shader "Custom/SquareClippingShader"
         #pragma surface surf Standard fullforwardshadows
 
         sampler2D _MainTex;
-        float4 _ClipCenter; // Center of the clipping region (x, y, z)
-        float4 _ClipSize;   // Half-size of the clipping region (width, height, depth)
+        float4 _ClipCenter; // Center of the clipping sphere
+        float _ClipRadius;  // Radius of the clipping sphere
         float _Glossiness;  // Smoothness
         float _Metallic;    // Metallic
 
@@ -37,14 +37,11 @@ Shader "Custom/SquareClippingShader"
             o.Metallic = _Metallic;   // Metallic property
             o.Smoothness = _Glossiness; // Smoothness property
 
-            // Compute the min and max bounds based on the center and size
-            float3 clipMin = _ClipCenter.xyz - _ClipSize.xyz * 0.5;
-            float3 clipMax = _ClipCenter.xyz + _ClipSize.xyz * 0.5;
+            // Compute the distance from the fragment to the clip center
+            float dist = distance(IN.worldPos, _ClipCenter.xyz);
 
-            // Clip fragments outside the cube bounds
-            if (IN.worldPos.x < clipMin.x || IN.worldPos.x > clipMax.x ||
-                IN.worldPos.y < clipMin.y || IN.worldPos.y > clipMax.y ||
-                IN.worldPos.z < clipMin.z || IN.worldPos.z > clipMax.z)
+            // Clip fragments outside the sphere
+            if (dist > _ClipRadius)
             {
                 clip(-1); // Discard pixels outside the bounds
             }
