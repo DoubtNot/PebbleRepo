@@ -16,8 +16,8 @@ public class PlayerRotation : MonoBehaviour
             // Determine the rotation amount based on the difference
             float rotationAmount = yDifference * rotationSpeed;
 
-            // Apply rotation to the player on the Y-axis
-            transform.rotation = Quaternion.Euler(0, rotationAmount, 0);
+            // Apply local rotation to the player on the Y-axis
+            transform.localRotation = Quaternion.Euler(0, rotationAmount, 0);
         }
     }
 }

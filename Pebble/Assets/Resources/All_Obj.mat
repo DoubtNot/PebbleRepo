@@ -103,7 +103,7 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ClipDistance: 0.67
-    - _ClipRadius: 0.5
+    - _ClipRadius: 50
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
